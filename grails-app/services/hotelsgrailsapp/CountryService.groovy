@@ -9,6 +9,10 @@ class CountryService {
         Country.get(id)
     }
 
+    Country getByName(String name){
+        Country.findByName(name)
+    }
+
     def list() {
         Country.list()
     }

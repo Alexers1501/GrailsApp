@@ -13,7 +13,6 @@ class CountryController {
     }
 
     def addCountry(Country country){
-        println(country.name)
         countryService.save(country)
 
         redirect action: 'index'
