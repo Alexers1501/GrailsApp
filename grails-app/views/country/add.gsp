@@ -8,17 +8,16 @@
 <div id="content" role="main">
     <section class="row colset-2-its">
         <h1>Справочник стран</h1>
-        <h2>Реадктирование данных о стране</h2>
+        <h2>Добавление страны</h2>
 
-        <g:form controller="country" action="updateCountry" method="post"
-                params="[countryId: country.id]"
+        <g:form controller="country" action="addCountry" method="post"
                 style="margin: 0 auto; width:320px">
             <label for="name">Название страны</label>
-            <input type="text" name="country.name" value="${country.name}" id="name"/>
+            <input type="text" name="country.name" value="" id="name"/>
 
             <label for="capital">Название столицы</label>
-            <input type="text" name="country.capital" value="${country.capital}" id="capital"/>
-            <input type="submit" name="update" value="Сохранить" id="update"/>
+            <input type="text" name="country.capital" value="" id="capital"/>
+            <input type="submit" name="save" value="Сохранить" id="save"/>
         </g:form>
     </section>
 </div>

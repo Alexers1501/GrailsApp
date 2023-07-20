@@ -9,11 +9,11 @@
     <section class="row colset-2-its">
         <h1>Справочник стран</h1>
 
-        <h4>${flash.message}</h4>
-
         <div>
-            <p> There are ${countryTotal} countries in DB</p>
-            <
+            <p> Всего ${countryTotal} стран в справочнике</p>
+            <g:link controller="country" action="add">
+                Добавить
+            </g:link>
         </div>
 
         <ul>
@@ -25,7 +25,7 @@
                         <g:link controller="country" class = "editButton" action="edit" id="${country.id}">
                             Редактировать
                         </g:link>
-                        <g:link controller="country" action="deleteCountry" id="deleteCountry${country.id}">
+                        <g:link controller="country" action="delete" id="${country.id}">
                             Удалить
                         </g:link>
                     </div>
