@@ -20,4 +20,8 @@ class HotelService {
     def delete(id) {
         Hotel.get(id).delete()
     }
+
+//    boolean validate(Hotel hotel){
+//        hotel.
+//    }
 }

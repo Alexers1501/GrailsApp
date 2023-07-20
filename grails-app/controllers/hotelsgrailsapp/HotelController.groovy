@@ -10,14 +10,22 @@ class HotelController {
     }
 
     def add(){
-        respond([countryList: countryService.list()])
+        Hotel hotel = new Hotel()
+        respond([hotel: hotel, countryList: countryService.list()])
     }
 
     def addHotel(Hotel hotel){
         hotel.setCountry(countryService.getByName(hotel.country.name))
-        hotelService.save(hotel)
 
-        redirect action: 'index'
+        if (!hotel.validate()){
+            log.error("Отель не был сохранен!")
+            render view: 'add', model: [hotel: hotel, countryList: countryService.list()]
+        }
+        else{
+            hotelService.save(hotel)
+            redirect action: 'index'
+        }
+
     }
 
     def updateHotel(Hotel hotel) {

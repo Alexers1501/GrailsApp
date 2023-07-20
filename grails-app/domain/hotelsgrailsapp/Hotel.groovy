@@ -8,8 +8,7 @@ class Hotel {
     String site
 
     static constraints = {
-        //todo уинкальне в пределах страны и потом другие поля тоже
-        name nullable: false, unique: true, maSize: 255
+        name nullable: false, unique: 'country', maxSize: 255
         country nullable: false
         rate nullable: false, min: 1, max: 5
         site nullable: true

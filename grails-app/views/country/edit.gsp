@@ -14,10 +14,10 @@
                 params="[countryId: country.id]"
                 style="margin: 0 auto; width:320px">
             <label for="name">Название страны</label>
-            <input type="text" name="country.name" value="${country.name}" id="name"/>
+            <input type="text" name="country.name" value="${country.name}" id="name" maxSize="255" required/>
 
             <label for="capital">Название столицы</label>
-            <input type="text" name="country.capital" value="${country.capital}" id="capital"/>
+            <input type="text" name="country.capital" value="${country.capital}" id="capital" maxSize="128" required/>
             <input type="submit" name="update" value="Сохранить" id="update"/>
         </g:form>
     </section>
