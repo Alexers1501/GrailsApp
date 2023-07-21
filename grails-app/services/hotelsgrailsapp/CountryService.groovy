@@ -13,8 +13,12 @@ class CountryService {
         Country.findByName(name)
     }
 
-    def list() {
-        Country.list()
+    def list(max = 10, offset = 0) {
+        def criteria = Country.createCriteria()
+        def result = criteria.list (max: max, offset: offset){
+            order("name", "asc")
+        }
+        return result
     }
 
     Country save(Country country) {
@@ -23,5 +27,15 @@ class CountryService {
 
     def delete(id) {
         Country.get(id).delete()
+    }
+
+    def filterCountryBySearchBar(String countryName,
+                                 max = 10, offset = 0){
+        def criteria = Country.createCriteria()
+        def result = criteria.list (max: max, offset: offset){
+            ilike("name", "%${countryName}%")
+            order("name", "asc")
+        }
+        return result
     }
 }

@@ -8,9 +8,11 @@ class UrlMappings {
                 // apply constraints here
             }
         }
-
-        "/"(view:"/index")
+        "/"(controller: "hotel")
         "500"(view:'/error')
         "404"(view:'/notFound')
+    }
+    def index(){
+        redirect action: '/hotel/index'
     }
 }

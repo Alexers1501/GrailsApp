@@ -8,6 +8,14 @@ class HotelController {
     def currentFilterParams = [filterName: "", countryName: "Любая"]
 
     def index() {
+        initCatalogPage()
+    }
+
+    def catalog(){
+        initCatalogPage()
+    }
+
+    private def initCatalogPage(){
         if (!params.offset){
             params.offset = 0
             params.max = 10
@@ -18,7 +26,7 @@ class HotelController {
         respond([messageCountHotels: message,
                  hotelList: hotelService.list(params.max, params.offset),
                  countryList: countryService.list(),
-                filterParams: currentFilterParams])
+                 filterParams: currentFilterParams])
     }
 
     def add(){
@@ -35,31 +43,46 @@ class HotelController {
         }
         else{
             hotelService.save(hotel)
-            redirect action: 'index'
+            redirect action: 'catalog'
         }
 
     }
 
     def updateHotel(Hotel hotel) {
-        Hotel hotelToUpdate = hotelService.get(params.countryId)
+        Hotel hotelToUpdate = hotelService.get(params.hotelId)
         hotelToUpdate.name = hotel.name
+        hotelToUpdate.setCountry(countryService.getByName(hotel.country.name))
+        hotelToUpdate.rate = hotel.rate
+        hotelToUpdate.site = hotel.site
 
         hotelService.save(hotelToUpdate)
 
-        redirect action: 'index'
+        redirect action: 'catalog'
     }
 
     def edit(int id) {
-        respond([hotel: hotelService.get(id)])
+        respond([hotel: hotelService.get(id), countryList: countryService.list()])
     }
 
     def delete(int id){
         hotelService.delete(id)
 
-        redirect action: 'index'
+        redirect action: 'catalog'
     }
 
-    def searchHotelsByFilter(String filterName, String countryName){
+    def searchByIndexPage(String filterName, String countryName){
+        def model = searchHotelsByFilter(filterName, countryName)
+
+        render view: 'index', model: model
+    }
+
+    def searchByCatalogPage(String filterName, String countryName){
+        def model = searchHotelsByFilter(filterName, countryName)
+
+        render view: 'catalog', model: model
+    }
+
+    private def searchHotelsByFilter(String filterName, String countryName){
 
         if (countryName){
             currentFilterParams.filterName = filterName
@@ -70,6 +93,7 @@ class HotelController {
             params.offset = 0
             params.max = 10
         }
+
         def results = hotelService.filterHotelsBySearchBar(currentFilterParams.filterName,
                 currentFilterParams.countryName, params.max, params.offset)
         String message
@@ -80,10 +104,11 @@ class HotelController {
             message = "Количество найденных отелей: ${results.totalCount}"
         }
 
-        render view: 'index',
-                model: [messageCountHotels: message,
-                        hotelList: results,
-                        countryList: countryService.list(),
-                        filterParams: currentFilterParams]
+        def model = [messageCountHotels: message,
+                     hotelList: results,
+                     countryList: countryService.list(),
+                     filterParams: currentFilterParams]
+
+        return model
     }
 }

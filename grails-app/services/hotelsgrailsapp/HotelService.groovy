@@ -13,7 +13,10 @@ class HotelService {
 
     def list(max = 10, offset = 0) {
         def criteria = Hotel.createCriteria()
-        def result = criteria.list (max: max, offset: offset){}
+        def result = criteria.list (max: max, offset: offset){
+            order("rate", "desc")
+            order("name", "asc")
+        }
         return result
     }
 
@@ -33,10 +36,10 @@ class HotelService {
             result = criteria.list (max: max, offset: offset){
                 ilike("name", "%${filterName}%")
                 order("rate", "desk")
+                order("name", "asc")
             }
         }
         else{
-            Long countryId = countryService.getByName(countryName).id
             result = criteria.list (max: max, offset: offset){
                 ilike("name", "%${filterName}%")
                 country {
@@ -44,6 +47,7 @@ class HotelService {
                 }
 
                 order("rate", "desk")
+                order("name", "asc")
             }
         }
         return result

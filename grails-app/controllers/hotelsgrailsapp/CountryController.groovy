@@ -4,8 +4,20 @@ class CountryController {
 
     CountryService countryService
 
+    private String currentFilterCountryName = ""
+
     def index() {
-        respond([countryTotal: Country.count(), countryList: countryService.list()])
+
+        if (!params.offset){
+            params.offset = 0
+            params.max = 10
+            currentFilterCountryName = ""
+        }
+
+        def message = "Количество найденных стран: ${Country.count()}"
+        respond([messageCountCountry: message,
+                countryList: countryService.list(),
+                filterName: currentFilterCountryName])
     }
 
     def add(){
@@ -22,7 +34,6 @@ class CountryController {
         Country countryToUpdate = countryService.get(params.countryId)
         countryToUpdate.name = country.name
         countryToUpdate.capital = country.capital
-//        log.info("Идет сохранение Country[name:${country.name}, capital:${country.capital}]...")
         countryService.save(countryToUpdate)
 
         redirect action: 'index'
@@ -33,10 +44,32 @@ class CountryController {
     }
 
     def delete(int id){
-        //todo сть оповещение что отели тоже удаляются
         println(id)
         countryService.delete(id)
 
         redirect action: 'index'
+    }
+
+    def searchCountry(String filterName){
+        currentFilterCountryName = filterName
+
+        if (!params.offset){
+            params.offset = 0
+            params.max = 10
+        }
+        def results = countryService.filterCountryBySearchBar(currentFilterCountryName, params.max, params.offset)
+        String message
+        if (results.size() == 0){
+            message = "По Вашему запросу ничего не найдено"
+        }
+        else{
+            message = "Количество найденных стран: ${results.totalCount}"
+        }
+
+        def model = [messageCountCountry: message,
+                     countryList: results,
+                     filterName: currentFilterCountryName]
+
+        render view: 'index', model: model
     }
 }

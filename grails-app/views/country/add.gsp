@@ -12,12 +12,19 @@
 
         <g:form controller="country" action="addCountry" method="post"
                 style="margin: 0 auto; width:320px">
-            <label for="name">Название страны</label>
-            <input type="text" name="country.name" value="" id="name" maxSize="255" required/>
+            <div>
+                <label for="name">Название страны</label>
+                <input type="text" name="country.name" value="" id="name" maxSize="255" required/>
+            </div>
 
-            <label for="capital">Название столицы</label>
-            <input type="text" name="country.capital" value="" id="capital" maxSize="128" required/>
-            <input type="submit" name="save" value="Сохранить" id="save"/>
+            <div>
+                <label for="capital">Название столицы</label>
+                <input type="text" name="country.capital" value="" id="capital" maxSize="128" required/>
+            </div>
+
+            <div>
+                <input type="submit" name="save" value="Сохранить" id="save"/>
+            </div>
         </g:form>
     </section>
 </div>

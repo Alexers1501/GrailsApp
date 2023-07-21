@@ -7,37 +7,70 @@
 
 <div id="content" role="main">
     <section class="row colset-2-its">
+
         <h1>Справочник стран</h1>
 
-        <div>
-            <p> Всего ${countryTotal} стран в справочнике</p>
-            <g:link controller="country" action="add">
-                Добавить
-            </g:link>
-        </div>
+        <div class="outer-container">
 
-        <ul>
-            <g:each in="${countryList}" var="country">
-                <li>
-                    <div class="countryData" id="countryData${country.id}">
-                        <h3>${country.name}</h3>
-                        столица: ${country.capital}
-                        <g:link controller="country" class = "editButton" action="edit" id="${country.id}">
-                            Редактировать
-                        </g:link>
-                        <g:link controller="country" action="delete" id="${country.id}">
-                            Удалить
-                        </g:link>
+            <div>
+                <g:form controller="country" class="filter-container" action="searchCountry" method="post">
+                    <div>
+                        <label for="filterName">Поиск</label>
+                        <input type="text" name="filterName" value="${filterName}" id="filterName"/>
                     </div>
-                </li>
-            </g:each>
-        </ul>
 
+                    <div>
+                        <input type="submit" value="Найти"/>
+                    </div>
+                </g:form>
+            </div>
 
-%{--        <form action="/country/updateName" method="post" style="margin: 0 auto; width:320px">--}%
-%{--            <input type="text" name="name" value="" id="name"/>--}%
-%{--            <input type="submit" name="update name" value="update name" id="update name"/>--}%
-%{--        </form>--}%
+            <div>
+                <p> ${messageCountCountry}</p>
+            </div>
+
+            <div>
+                <g:link class="button-link" controller="country" action="add">
+                    + Добавить страну
+                </g:link>
+            </div>
+
+            <div class="page-numbers">
+                <g:paginate controller="country" action="searchCountry"
+                            params="${params}"
+                            total="${countryList.totalCount}"/>
+            </div>
+
+            <g:if test="${countryList.totalCount > 0}">
+
+                <table>
+                    <tr>
+                        <th>Название</th>
+                        <th>Столица</th>
+                        <th>Действия</th>
+                    </tr>
+                    <g:each in="${countryList}" var="country">
+                        <tr>
+                            <td>
+                                ${country.name}
+                            </td>
+                            <td>${country.capital}</td>
+                            <td>
+                                <g:link class="button-link" controller="country" action="edit" id="${country.id}">
+                                    Редактировать
+                                </g:link>
+                                <br>
+                                <g:link class="button-link" controller="country" action="delete" id="${country.id}">
+                                    Удалить
+                                </g:link>
+                            </td>
+                        </tr>
+                    </g:each>
+                </table>
+
+            </g:if>
+
+        </div>
     </section>
 </div>
 
