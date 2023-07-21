@@ -35,7 +35,7 @@ class HotelService {
         if (countryName == "Любая"){
             result = criteria.list (max: max, offset: offset){
                 ilike("name", "%${filterName}%")
-                order("rate", "desk")
+                order("rate", "desc")
                 order("name", "asc")
             }
         }
@@ -46,7 +46,7 @@ class HotelService {
                     eq('name', countryName)
                 }
 
-                order("rate", "desk")
+                order("rate", "desc")
                 order("name", "asc")
             }
         }
