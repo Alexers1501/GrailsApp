@@ -7,6 +7,8 @@ class Hotel {
     int rate
     String site
 
+    static belongsTo = [country: Country]
+
     static constraints = {
         name nullable: false, unique: 'country', maxSize: 255
         country nullable: false

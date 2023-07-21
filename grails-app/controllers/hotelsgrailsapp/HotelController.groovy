@@ -5,8 +5,20 @@ class HotelController {
     HotelService hotelService
     CountryService countryService
 
+    def currentFilterParams = [filterName: "", countryName: "Любая"]
+
     def index() {
-        respond([hotelTotal: Hotel.count(), hotelList: hotelService.list()])
+        if (!params.offset){
+            params.offset = 0
+            params.max = 10
+            currentFilterParams.filterName = ""
+            currentFilterParams.countryName = "Любая"
+        }
+        String message = "Количество найденных отелей: ${Hotel.count()}"
+        respond([messageCountHotels: message,
+                 hotelList: hotelService.list(params.max, params.offset),
+                 countryList: countryService.list(),
+                filterParams: currentFilterParams])
     }
 
     def add(){
@@ -45,5 +57,33 @@ class HotelController {
         hotelService.delete(id)
 
         redirect action: 'index'
+    }
+
+    def searchHotelsByFilter(String filterName, String countryName){
+
+        if (countryName){
+            currentFilterParams.filterName = filterName
+            currentFilterParams.countryName = countryName
+        }
+
+        if (!params.offset){
+            params.offset = 0
+            params.max = 10
+        }
+        def results = hotelService.filterHotelsBySearchBar(currentFilterParams.filterName,
+                currentFilterParams.countryName, params.max, params.offset)
+        String message
+        if (results.size() == 0){
+            message = "По Вашему запросу ничего не найдено"
+        }
+        else{
+            message = "Количество найденных отелей: ${results.totalCount}"
+        }
+
+        render view: 'index',
+                model: [messageCountHotels: message,
+                        hotelList: results,
+                        countryList: countryService.list(),
+                        filterParams: currentFilterParams]
     }
 }
