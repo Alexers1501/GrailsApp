@@ -25,18 +25,31 @@ class CountryController {
     }
 
     def addCountry(Country country){
-        countryService.save(country)
 
-        redirect action: 'index'
+        if (!country.validate()){
+            log.error("Страна не была сохранена!")
+            render view: 'add', model: [country: country]
+        }
+        else{
+            countryService.save(country)
+            redirect action: 'index'
+        }
     }
 
     def updateCountry(Country country) {
-        Country countryToUpdate = countryService.get(params.countryId)
-        countryToUpdate.name = country.name
-        countryToUpdate.capital = country.capital
-        countryService.save(countryToUpdate)
 
-        redirect action: 'index'
+        if (!country.validate()){
+            country.setId(params.countryId.toLong())
+            log.error("Страна не была сохранена!")
+            render view: 'edit', model: [country: country]
+        }
+        else{
+            Country countryToUpdate = countryService.get(params.countryId)
+            countryToUpdate.name = country.name
+            countryToUpdate.capital = country.capital
+            countryService.save(countryToUpdate)
+            redirect action: 'index'
+        }
     }
 
     def edit(int id) {

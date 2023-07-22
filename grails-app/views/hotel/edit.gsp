@@ -43,7 +43,7 @@
 
             <div>
                 <label for="site">Сайт</label>
-                <input type="url" name="hotel.site" value="" id="site"/>
+                <input type="url" name="hotel.site" value="${hotel.site}" id="site"/>
             </div>
 
             <div>

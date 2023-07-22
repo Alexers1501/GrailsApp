@@ -15,7 +15,11 @@
                 style="margin: 0 auto; width:320px">
             <div>
                 <label for="name">Название страны</label>
-                <input type="text" name="country.name" value="${country.name}" id="name" maxSize="255" required/>
+                <input type="text" name="country.name" value="${fieldValue(bean:country, field:'name')}" id="name" maxSize="255" required/>
+                <br>
+                <g:hasErrors bean="${country}">
+                    <span style="color: red">Название слишком длинное или название уже занято</span>
+                </g:hasErrors>
             </div>
 
             <div>

@@ -14,12 +14,16 @@
                 style="margin: 0 auto; width:320px">
             <div>
                 <label for="name">Название страны</label>
-                <input type="text" name="country.name" value="" id="name" maxSize="255" required/>
+                <input type="text" name="country.name" value="${fieldValue(bean:country, field:'name')}" id="name" maxSize="255" required/>
+                <br>
+                <g:hasErrors bean="${country}">
+                    <span style="color: red">Название слишком длинное или название уже занято</span>
+                </g:hasErrors>
             </div>
 
             <div>
                 <label for="capital">Название столицы</label>
-                <input type="text" name="country.capital" value="" id="capital" maxSize="128" required/>
+                <input type="text" name="country.capital" value="${fieldValue(bean:country, field:'capital')}" id="capital" maxSize="128" required/>
             </div>
 
             <div>

@@ -1,5 +1,7 @@
 package hotelsgrailsapp
 
+import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException
+
 class HotelController {
 
     HotelService hotelService
@@ -49,15 +51,23 @@ class HotelController {
     }
 
     def updateHotel(Hotel hotel) {
-        Hotel hotelToUpdate = hotelService.get(params.hotelId)
-        hotelToUpdate.name = hotel.name
-        hotelToUpdate.setCountry(countryService.getByName(hotel.country.name))
-        hotelToUpdate.rate = hotel.rate
-        hotelToUpdate.site = hotel.site
+        hotel.setCountry(countryService.getByName(hotel.country.name))
 
-        hotelService.save(hotelToUpdate)
+        if (!hotel.validate()){
+            hotel.setId(params.hotelId.toLong())
+            log.error("Отель не был изменен!")
+            render view: 'edit', model: [hotel: hotel, countryList: countryService.list()]
+        }
+        else{
+            Hotel hotelToUpdate = hotelService.get(params.hotelId)
+            hotelToUpdate.setCountry(countryService.getByName(hotel.country.name))
+            hotelToUpdate.name = hotel.name
+            hotelToUpdate.rate = hotel.rate
+            hotelToUpdate.site = hotel.site
+            hotelService.save(hotelToUpdate)
+            redirect action: 'catalog'
+        }
 
-        redirect action: 'catalog'
     }
 
     def edit(int id) {
