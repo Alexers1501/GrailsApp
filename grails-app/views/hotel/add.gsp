@@ -27,19 +27,21 @@
                 <label for="country">Название страны</label>
                 <select name="hotel.country.name" id="country" required>
                     <g:each in="${countryList}" var="country">
-                        <option>${country.name}</option>
+                        <option>
+                            ${country.name}
+                        </option>
                     </g:each>
                 </select>
             </div>
 
             <div>
                 <label for="rate">Количество звезд</label>
-                <input type="number" min="1" max="5" value="1" name="hotel.rate" id="rate" required/>
+                <input type="number" min="1" max="5" value="${fieldValue(bean:hotel, field:'rate')}" name="hotel.rate" id="rate" required/>
             </div>
 
             <div>
                 <label for="site">Сайт</label>
-                <input type="url" name="hotel.site" value="" id="site"/>
+                <input type="url" name="hotel.site" value="${fieldValue(bean:hotel, field:'site')}" id="site"/>
             </div>
 
             <div>
