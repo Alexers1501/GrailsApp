@@ -23,6 +23,12 @@ class BootStrap {
         countryService.save(c1)
         countryService.save(c2)
         countryService.save(c3)
+        countryService.save(c4)
+        countryService.save(c5)
+        countryService.save(c6)
+        countryService.save(c7)
+        countryService.save(c8)
+        countryService.save(c9)
 
         hotelService.save(new Hotel(name: 'Вятка', country: c1, rate: 3, site: "https://www.vyatkahotel.ru/"))
         hotelService.save(new Hotel(name: 'Marins Park Hotel', country: c1, rate: 3))
